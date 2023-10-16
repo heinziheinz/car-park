@@ -12,7 +12,7 @@ import java.sql.Timestamp;
 import java.time.LocalDate;
 
 
-
+@Entity
 public class Car{
     @Id
     @GeneratedValue
@@ -20,7 +20,7 @@ public class Car{
     private String typeName;
     private double price;
 
-
+    @OneToOne
     private Reservation reservation;
 
     public long getId() {

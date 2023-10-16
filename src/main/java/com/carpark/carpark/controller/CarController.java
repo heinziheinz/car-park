@@ -22,6 +22,11 @@ public class CarController {
         return carRepository.findAll();
     }
 
+    @GetMapping("/type/{name}")
+    List<Car> findAllByType(@PathVariable String name) {
+        return carRepository.findAllByTypeName(name);
+    }
+
     @PostMapping
     Car save(@RequestBody Car car) {
         return carRepository.save(car);
@@ -46,7 +51,6 @@ public class CarController {
             Car car = existingCar.get();
             car.setTypeName(updatedCar.getTypeName());
             car.setPrice(updatedCar.getPrice());
-            // Update other properties as needed
 
             return carRepository.save(car);
         } else {
