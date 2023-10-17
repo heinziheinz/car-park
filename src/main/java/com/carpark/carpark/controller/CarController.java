@@ -5,18 +5,27 @@ import com.carpark.carpark.model.Car;
 import com.carpark.carpark.model.Reservation;
 import com.carpark.carpark.model.User;
 import com.carpark.carpark.repository.CarRepository;
+import com.carpark.carpark.repository.ReservationRepository;
+import com.carpark.carpark.repository.UserRepository;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
+import java.util.Set;
 
 @RestController
 @RequestMapping("cars")
 public class CarController {
     private final CarRepository carRepository;
+    private final UserRepository userRepository;
+    private final ReservationRepository reservationRepository;
 
-    public CarController(CarRepository carRepository) {
+    public CarController(CarRepository carRepository, UserRepository userRepository, ReservationRepository reservationRepository) {
         this.carRepository = carRepository;
+        this.userRepository = userRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     @GetMapping
@@ -60,13 +69,21 @@ public class CarController {
         }
     }
 
-    @PostMapping("/{carId}/user/{userId}")
+    @PostMapping("/{carId}/user/{userId}/{startDate}/{endDate}")
     Car rentACar(
             @PathVariable long carId,
-            @PathVariable long userId
-    ) throws RescourceNotFoundException{
+            @PathVariable long userId,
+            @PathVariable LocalDate startDate,
+            @PathVariable LocalDate endDate
+            ) throws RescourceNotFoundException {
         Car car = carRepository.findById(carId).orElseThrow(RescourceNotFoundException::new);
-        Reservation reservation = new Reservation();
+        User user = userRepository.findById(userId).orElseThrow(RescourceNotFoundException::new);
+        Reservation reservation = new Reservation(user, startDate, endDate);
+        reservation.setCar(car); // Set the car for the reservation
+        Reservation reservationInst = reservationRepository.save(reservation);
+        Set<Reservation> reservations = car.getReservations();
+        reservations.add(reservationInst);
+        return car;
 
     }
 }

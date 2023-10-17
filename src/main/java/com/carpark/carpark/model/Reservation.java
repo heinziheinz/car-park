@@ -16,6 +16,16 @@ public class Reservation {
     private  LocalDate startDate;
     private LocalDate endDate;
 
+    public Reservation() {
+
+    }
+
+    public Reservation(User user, LocalDate startDate, LocalDate endDate) {
+        this.user = user;
+        this.startDate = startDate;
+        this.endDate = endDate;
+    }
+
     @ManyToOne
     @JsonIgnore // Add @JsonIgnore to prevent infinite loop
     private Car car; // Establishes the Many-to-One relationship with Car
