@@ -4,7 +4,6 @@ package com.carpark.carpark.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 public class Reservation {
@@ -13,8 +12,8 @@ public class Reservation {
     private long id;
     @ManyToOne
     private  User user;
-    private  LocalDate start;
-    private LocalDate end;
+    private  LocalDate startDate;
+    private LocalDate endDate;
 
     public long getId() {
         return id;
@@ -32,19 +31,19 @@ public class Reservation {
         this.user = user;
     }
 
-    public LocalDate getStart() {
-        return start;
+    public LocalDate getStartDate() {
+        return startDate;
     }
 
-    public void setStart(LocalDate start) {
-        this.start = start;
+    public void setStartDate(LocalDate start) {
+        this.startDate = start;
     }
 
-    public LocalDate getEnd() {
-        return end;
+    public LocalDate getEndDate() {
+        return endDate;
     }
 
-    public void setEnd(LocalDate end) {
-        this.end = end;
+    public void setEndDate(LocalDate end) {
+        this.endDate = end;
     }
 }
