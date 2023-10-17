@@ -1,6 +1,7 @@
 package com.carpark.carpark.model;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
@@ -11,9 +12,24 @@ public class Reservation {
     @GeneratedValue
     private long id;
     @ManyToOne
+    @JsonIgnore // Add @JsonIgnore to prevent infinite loop
     private  User user;
     private  LocalDate startDate;
     private LocalDate endDate;
+
+    @ManyToOne
+    @JsonIgnore // Add @JsonIgnore to prevent infinite loop
+    private Car car; // Establishes the Many-to-One relationship with Car
+
+    // Getter for car
+    public Car getCar() {
+        return car;
+    }
+
+    // Setter for car
+    public void setCar(Car car) {
+        this.car = car;
+    }
 
     public long getId() {
         return id;
