@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.Set;
 
@@ -75,7 +74,7 @@ public class CarController {
             @PathVariable long userId,
             @PathVariable LocalDate startDate,
             @PathVariable LocalDate endDate
-            ) throws RescourceNotFoundException {
+    ) throws RescourceNotFoundException {
         Car car = carRepository.findById(carId).orElseThrow(RescourceNotFoundException::new);
         User user = userRepository.findById(userId).orElseThrow(RescourceNotFoundException::new);
         Reservation reservation = new Reservation(user, startDate, endDate);
@@ -85,5 +84,10 @@ public class CarController {
         reservations.add(reservationInst);
         return car;
 
+    }
+
+    @GetMapping("find-available-cars-for-rent/{startDate}/{endDate}")
+    List<Car> getAllAvailableCars(@PathVariable LocalDate startDate, @PathVariable LocalDate endDate) {
+        return carRepository.findAvailableCars(startDate, endDate);
     }
 }
