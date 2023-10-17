@@ -1,26 +1,35 @@
 package com.carpark.carpark.model;
 
 
-import jakarta.persistence.*;
-import org.springframework.context.annotation.Bean;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
 
 @Entity
-public class Car{
+public class Car {
     @Id
     @GeneratedValue
     private long id;
     private String typeName;
     private double price;
 
+
     @OneToMany(mappedBy = "car")
     private Set<Reservation> reservations = new HashSet<>();
+
+    public Car() {
+
+    }
+
+    public Car(String typeName, double price) {
+        this.typeName = typeName;
+        this.price = price;
+    }
 
     public long getId() {
         return id;
