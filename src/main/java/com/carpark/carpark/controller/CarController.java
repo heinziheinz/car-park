@@ -2,6 +2,8 @@ package com.carpark.carpark.controller;
 
 
 import com.carpark.carpark.model.Car;
+import com.carpark.carpark.model.Reservation;
+import com.carpark.carpark.model.User;
 import com.carpark.carpark.repository.CarRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -58,4 +60,13 @@ public class CarController {
         }
     }
 
+    @PostMapping("/{carId}/user/{userId}")
+    Car rentACar(
+            @PathVariable long carId,
+            @PathVariable long userId
+    ) throws RescourceNotFoundException{
+        Car car = carRepository.findById(carId).orElseThrow(RescourceNotFoundException::new);
+        Reservation reservation = new Reservation();
+
+    }
 }
