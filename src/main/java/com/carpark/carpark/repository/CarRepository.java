@@ -1,5 +1,6 @@
-package com.carpark.carpark.model;
+package com.carpark.carpark.repository;
 
+import com.carpark.carpark.model.Car;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;

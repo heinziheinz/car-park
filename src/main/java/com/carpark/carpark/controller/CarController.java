@@ -2,7 +2,7 @@ package com.carpark.carpark.controller;
 
 
 import com.carpark.carpark.model.Car;
-import com.carpark.carpark.model.CarRepository;
+import com.carpark.carpark.repository.CarRepository;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

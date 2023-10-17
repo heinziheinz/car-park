@@ -16,6 +16,15 @@ public class User {
     private LocalDate birthdate;
     private String address;
 
+    public User() {
+    }
+
+    public User(String name, LocalDate birthdate, String address) {
+        this.name = name;
+        this.birthdate = birthdate;
+        this.address = address;
+    }
+
     public long getId() {
         return id;
     }

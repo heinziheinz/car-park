@@ -12,7 +12,6 @@ public class Reservation {
     @GeneratedValue
     private long id;
     @ManyToOne
-    @JsonIgnore // Add @JsonIgnore to prevent infinite loop
     private  User user;
     private  LocalDate startDate;
     private LocalDate endDate;
