@@ -7,6 +7,7 @@ import com.carpark.carpark.model.User;
 import com.carpark.carpark.repository.CarRepository;
 import com.carpark.carpark.repository.ReservationRepository;
 import com.carpark.carpark.repository.UserRepository;
+import com.carpark.carpark.service.CarReservationService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -22,11 +23,13 @@ public class CarController {
     private final CarRepository carRepository;
     private final UserRepository userRepository;
     private final ReservationRepository reservationRepository;
+    private final CarReservationService carReservationService;
 
-    public CarController(CarRepository carRepository, UserRepository userRepository, ReservationRepository reservationRepository) {
+    public CarController(CarRepository carRepository, UserRepository userRepository, ReservationRepository reservationRepository, CarReservationService carReservationService) {
         this.carRepository = carRepository;
         this.userRepository = userRepository;
         this.reservationRepository = reservationRepository;
+        this.carReservationService = carReservationService;
     }
 
 //    @GetMapping
@@ -82,13 +85,17 @@ public class CarController {
             @PathVariable LocalDate startDate,
             @PathVariable LocalDate endDate
     ) throws RescourceNotFoundException {
-        Car car = carRepository.findById(carId).orElseThrow(RescourceNotFoundException::new);
-        User user = userRepository.findById(userId).orElseThrow(RescourceNotFoundException::new);
-        Reservation reservation = new Reservation(user, startDate, endDate);
-        reservation.setCar(car); // Set the car for the reservation
-        Reservation reservationInst = reservationRepository.save(reservation);
-        Set<Reservation> reservations = car.getReservations();
-        reservations.add(reservationInst);
+
+        Car car = carReservationService.getRequestedCar(carId, carRepository);
+        User user = carReservationService.getUser(userId, userRepository);
+        boolean carAvailable = carReservationService.isCarAvailableDuringTimePeriod(car, startDate, endDate);
+        System.out.println("carAvailable = " + carAvailable);
+
+        if (!carAvailable) {
+            throw new RescourceNotFoundException();
+        }
+        carReservationService.carGetsReserved(car, user, startDate, endDate, reservationRepository);
+
         return car;
 
     }
