@@ -31,21 +31,7 @@ public class CarReservationService {
     }
 
     public boolean isCarAvailableDuringTimePeriod(Car car, LocalDate startDate, LocalDate endDate) {
-        System.out.println("dateTimeService.getCurrentDate():" + dateTimeService.getCurrentDate());
-//        if (car.getReservations().isEmpty()) {
-//            System.out.println("Inside");
-//            return true;
-//        } else {
-//            System.out.println("Exise");
-//            return car.getReservations().stream()
-//                    .anyMatch(
-//                            reservation -> {
-//                                System.out.println(" reservation.getStartDate().isAfter(endDate) = " + reservation.getStartDate().isAfter(endDate));
-//                                return startDate.isAfter(dateTimeService.getCurrentDate()) &&
-//                                        reservation.getStartDate().isAfter(endDate) || reservation.getEndDate().isBefore(startDate);
-//                            }
-//                    );
-//        }
+
         return car.getReservations().isEmpty() || car.getReservations().stream()
                 .anyMatch(
                         reservation -> reservation.getStartDate().isAfter(dateTimeService.getCurrentDate()) &&
