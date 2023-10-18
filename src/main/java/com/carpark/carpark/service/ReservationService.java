@@ -14,6 +14,10 @@ public class ReservationService {
             Optional<Reservation> existingReservation,
             Reservation updatedReservation) throws RescourceNotFoundException {
 
+        return getReservation(reservationRepository, existingReservation, updatedReservation);
+    }
+
+    private static Reservation getReservation(ReservationRepository reservationRepository, Optional<Reservation> existingReservation, Reservation updatedReservation) throws RescourceNotFoundException {
         if (existingReservation.isPresent()) {
             Reservation reservation = existingReservation.get();
             reservation.setStartDate(updatedReservation.getStartDate());
