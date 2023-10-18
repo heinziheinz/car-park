@@ -7,6 +7,8 @@ import com.carpark.carpark.model.User;
 import com.carpark.carpark.repository.CarRepository;
 import com.carpark.carpark.repository.ReservationRepository;
 import com.carpark.carpark.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
@@ -27,9 +29,14 @@ public class CarController {
         this.reservationRepository = reservationRepository;
     }
 
+//    @GetMapping
+//    List<Car> findAll() {
+//        return carRepository.findAll();
+//    }
+
     @GetMapping
-    List<Car> findAll() {
-        return carRepository.findAll();
+    Page<Car> findAll(Pageable pageable) {
+        return carRepository.findAll(pageable);
     }
 
     @GetMapping("/type/{name}")

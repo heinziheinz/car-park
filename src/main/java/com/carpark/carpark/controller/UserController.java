@@ -4,6 +4,8 @@ package com.carpark.carpark.controller;
 import com.carpark.carpark.model.Car;
 import com.carpark.carpark.model.User;
 import com.carpark.carpark.repository.UserRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,9 +21,14 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
+//    @GetMapping
+//    List<User> findAll() {
+//        return userRepository.findAll();
+//    }
+
     @GetMapping
-    List<User> findAll() {
-        return userRepository.findAll();
+    Page<User> findAll(Pageable pageable) {
+        return userRepository.findAll(pageable);
     }
 
     @GetMapping("/name/{name}")
