@@ -1,9 +1,10 @@
 package com.carpark.carpark.controller;
 
 
-import com.carpark.carpark.model.Car;
 import com.carpark.carpark.model.User;
 import com.carpark.carpark.repository.UserRepository;
+import com.carpark.carpark.service.ReservationService;
+import com.carpark.carpark.service.UserService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
@@ -16,9 +17,11 @@ import java.util.Optional;
 public class UserController {
 
     private final UserRepository userRepository;
+    private final UserService userService;
 
-    public UserController(UserRepository userRepository) {
+    public UserController(UserRepository userRepository, UserService userService) {
         this.userRepository = userRepository;
+        this.userService =  userService;
     }
 
 //    @GetMapping
@@ -35,6 +38,7 @@ public class UserController {
     List<User> findAllByType(@PathVariable String name) {
         return userRepository.findAllByName(name);
     }
+
     @PostMapping
     User save(@RequestBody User user) {
         return userRepository.save(user);
@@ -54,16 +58,11 @@ public class UserController {
     User update(@PathVariable long id, @RequestBody User updatedUser) throws RescourceNotFoundException {
         Optional<User> existingUser = userRepository.findById(id);
 
-        if (existingUser.isPresent()) {
-            User user = existingUser.get();
-            user.setName(updatedUser.getName());
-            user.setBirthdate(updatedUser.getBirthdate());
-            user.setAddress(updatedUser.getAddress());
+        return updateExistingUser(updatedUser, existingUser);
+    }
 
-            return userRepository.save(user);
-        } else {
-            throw new RescourceNotFoundException();
-        }
+    private User updateExistingUser(User updatedUser, Optional<User> existingUser) throws RescourceNotFoundException {
+        return userService.updateExistingUser(updatedUser,existingUser,userRepository);
     }
 
 }
