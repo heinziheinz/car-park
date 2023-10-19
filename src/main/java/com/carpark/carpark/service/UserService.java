@@ -1,7 +1,6 @@
 package com.carpark.carpark.service;
 
 import com.carpark.carpark.controller.RescourceNotFoundException;
-import com.carpark.carpark.model.Reservation;
 import com.carpark.carpark.model.User;
 import com.carpark.carpark.repository.UserRepository;
 import org.springframework.stereotype.Component;
@@ -10,11 +9,17 @@ import java.util.Optional;
 
 @Component
 public class UserService {
-    public User updateExistingUser(User updatedUser, Optional<User> existingUser, UserRepository userRepository) throws RescourceNotFoundException {
-        return getUser(updatedUser, existingUser, userRepository);
+    private final UserRepository userRepository;
+
+    public UserService(UserRepository userRepository) {
+        this.userRepository = userRepository;
     }
 
-    private static User getUser(User updatedUser, Optional<User> existingUser, UserRepository userRepository) throws RescourceNotFoundException {
+    public User updateExistingUser(User updatedUser, Optional<User> existingUser) throws RescourceNotFoundException {
+        return getUser(updatedUser, existingUser);
+    }
+
+    private User getUser(User updatedUser, Optional<User> existingUser) throws RescourceNotFoundException {
         if (existingUser.isPresent()) {
             User user = existingUser.get();
             user.setName(updatedUser.getName());

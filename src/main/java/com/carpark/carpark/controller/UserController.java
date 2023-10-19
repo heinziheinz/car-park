@@ -62,7 +62,7 @@ public class UserController {
     }
 
     private User updateExistingUser(User updatedUser, Optional<User> existingUser) throws RescourceNotFoundException {
-        return userService.updateExistingUser(updatedUser,existingUser,userRepository);
+        return userService.updateExistingUser(updatedUser,existingUser);
     }
 
 }

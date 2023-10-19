@@ -16,7 +16,7 @@ class ReservationServiceTest {
 
 
     ReservationRepository mockReservationRepository = mock(ReservationRepository.class);
-    ReservationService reservationService = new ReservationService();
+    ReservationService reservationService = new ReservationService(mockReservationRepository);
 
     @Test
     void updateExistingReservation() throws RescourceNotFoundException {
@@ -26,14 +26,14 @@ class ReservationServiceTest {
         Reservation updatedREservation = new Reservation(null, LocalDate.of(2022, 2, 1), LocalDate.of(2023, 1, 1));
         when(mockReservationRepository.save(reservation1.get())).thenReturn(updatedREservation);
 
-        Reservation actual = reservationService.updateExistingReservation(mockReservationRepository, reservation1, updatedREservation);
+        Reservation actual = reservationService.updateExistingReservation( reservation1, updatedREservation);
 
         Assertions.assertEquals(updatedREservation, actual);
 
 
         Optional<Reservation> emptyReservation = Optional.empty();
         Assertions.assertThrows(RescourceNotFoundException.class, () -> {
-            reservationService.updateExistingReservation(mockReservationRepository, emptyReservation, updatedREservation);
+            reservationService.updateExistingReservation( emptyReservation, updatedREservation);
         });
     }
 }

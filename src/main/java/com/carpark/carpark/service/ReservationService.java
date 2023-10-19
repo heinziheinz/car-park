@@ -9,15 +9,21 @@ import java.util.Optional;
 
 @Component
 public class ReservationService {
+
+    private final ReservationRepository reservationRepository;
+
+    public ReservationService(ReservationRepository reservationRepository) {
+        this.reservationRepository = reservationRepository;
+    }
+
     public Reservation updateExistingReservation(
-            ReservationRepository reservationRepository,
             Optional<Reservation> existingReservation,
             Reservation updatedReservation) throws RescourceNotFoundException {
 
-        return getReservation(reservationRepository, existingReservation, updatedReservation);
+        return getReservation(existingReservation, updatedReservation);
     }
 
-    private static Reservation getReservation(ReservationRepository reservationRepository, Optional<Reservation> existingReservation, Reservation updatedReservation) throws RescourceNotFoundException {
+    private Reservation getReservation( Optional<Reservation> existingReservation, Reservation updatedReservation) throws RescourceNotFoundException {
         if (existingReservation.isPresent()) {
             Reservation reservation = existingReservation.get();
             reservation.setStartDate(updatedReservation.getStartDate());

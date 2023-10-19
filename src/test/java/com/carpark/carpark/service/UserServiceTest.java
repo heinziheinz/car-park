@@ -1,7 +1,6 @@
 package com.carpark.carpark.service;
 
 import com.carpark.carpark.controller.RescourceNotFoundException;
-import com.carpark.carpark.model.Reservation;
 import com.carpark.carpark.model.User;
 import com.carpark.carpark.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -16,7 +15,7 @@ import static org.mockito.Mockito.when;
 class UserServiceTest {
 
     UserRepository mockedUserRepository = mock(UserRepository.class);
-    UserService userService = new UserService();
+    UserService userService = new UserService(mockedUserRepository);
 
     @Test
     void updateExistingUser() throws RescourceNotFoundException {
@@ -26,13 +25,13 @@ class UserServiceTest {
         Optional<User> existingUser = Optional.of(user);
         when(mockedUserRepository.save(existingUser.get())).thenReturn(updateForUser);
 
-        User actual = userService.updateExistingUser(updateForUser, existingUser, mockedUserRepository);
+        User actual = userService.updateExistingUser(updateForUser, existingUser);
 
         Assertions.assertEquals(updateForUser, actual);
 
         Optional<User> emptyUser = Optional.empty();
         Assertions.assertThrows(RescourceNotFoundException.class, () -> {
-            userService.updateExistingUser(updateForUser, emptyUser, mockedUserRepository);
+            userService.updateExistingUser(updateForUser, emptyUser);
         });
     }
 }

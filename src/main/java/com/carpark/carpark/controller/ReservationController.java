@@ -34,7 +34,7 @@ public class ReservationController {
     @PutMapping("/{id}")
     Reservation update(@PathVariable long id, @RequestBody Reservation updatedReservation) throws RescourceNotFoundException {
         Optional<Reservation> existingReservation = reservationRepository.findById(id);
-        return reservationService.updateExistingReservation(reservationRepository, existingReservation, updatedReservation);
+        return reservationService.updateExistingReservation(existingReservation, updatedReservation);
     }
 
 }
